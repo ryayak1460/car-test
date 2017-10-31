@@ -19,4 +19,5 @@ package com.qfree.cartest.helpers;
 
 public enum HandlerType {
     BUILD_LOT,
+    FILTER_NEW
 }

@@ -18,17 +18,13 @@
 package com.qfree.cartest.helpers;
 
 import com.qfree.cartest.transactions.Handler;
-import com.qfree.cartest.transactions.HandlerFactory;
+import com.qfree.cartest.transactions.data.FilterNewResponse;
+import com.qfree.cartest.transactions.data.Response;
 
-public class HandlerFactoryImpl implements HandlerFactory {
-    public Handler make(String type) {
-        switch (HandlerType.valueOf(type)) {
-            case BUILD_LOT:
-                return new BuildLotHandler();
+public class FilterNewHandler implements Handler {
+    public FilterNewResponse response;
 
-            case FILTER_NEW:
-                return new FilterNewHandler();
-        }
-        return null;
+    public void handle(Response response) {
+        this.response = (FilterNewResponse)response;
     }
 }
