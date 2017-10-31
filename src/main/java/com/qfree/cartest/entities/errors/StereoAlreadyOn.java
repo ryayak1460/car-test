@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2017 Ryan Y.
  *
@@ -13,13 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.qfree.cartest.entities.data;
+package com.qfree.cartest.entities.errors;
 
-public class CarData implements Data {
-    public String make = "";
-    public String model = "";
-    public int year = -1;
-    public boolean engine = false;
-    public boolean stereo = false;
-    public boolean headlights = false;
+public class StereoAlreadyOn extends RuntimeException {
 }
