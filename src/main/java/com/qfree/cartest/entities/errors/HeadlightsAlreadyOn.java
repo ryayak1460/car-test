@@ -18,4 +18,7 @@
 package com.qfree.cartest.entities.errors;
 
 public class HeadlightsAlreadyOn extends RuntimeException {
+    public String getMessage() {
+        return "Headlights already on.";
+    }
 }

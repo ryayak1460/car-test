@@ -15,10 +15,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.qfree.cartest.entities.errors;
+package com.qfree.cartest.helpers;
 
-public class EngineAlreadyOff extends RuntimeException {
-    public String getMessage() {
-        return "Engine already off.";
+import com.qfree.cartest.transactions.Handler;
+import com.qfree.cartest.transactions.data.PerformCarActionResponse;
+import com.qfree.cartest.transactions.data.Response;
+
+public class PerformCarActionHandler implements Handler {
+    public PerformCarActionResponse response;
+
+    public void handle(Response response) {
+        this.response = (PerformCarActionResponse)response;
     }
 }

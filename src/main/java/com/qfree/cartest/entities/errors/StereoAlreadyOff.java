@@ -18,4 +18,7 @@
 package com.qfree.cartest.entities.errors;
 
 public class StereoAlreadyOff extends RuntimeException {
+    public String getMessage() {
+        return "Stereo already off.";
+    }
 }

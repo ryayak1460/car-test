@@ -18,5 +18,8 @@
 package com.qfree.cartest.entities.errors;
 
 public class EngineOff extends RuntimeException {
+    public String getMessage() {
+        return "Engine off.";
+    }
 }
 

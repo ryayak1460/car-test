@@ -28,6 +28,9 @@ public class HandlerFactoryImpl implements HandlerFactory {
 
             case FILTER_NEW:
                 return new FilterNewHandler();
+
+            case PERFORM_ACTION:
+                return new PerformCarActionHandler();
         }
         return null;
     }

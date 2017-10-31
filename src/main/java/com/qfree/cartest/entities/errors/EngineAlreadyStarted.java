@@ -18,4 +18,7 @@
 package com.qfree.cartest.entities.errors;
 
 public class EngineAlreadyStarted extends RuntimeException {
+    public String getMessage() {
+        return "Engine already started.";
+    }
 }
