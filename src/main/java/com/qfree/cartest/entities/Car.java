@@ -25,7 +25,7 @@ import com.qfree.cartest.entities.errors.HeadlightsAlreadyOn;
 import com.qfree.cartest.entities.errors.StereoAlreadyOff;
 import com.qfree.cartest.entities.errors.StereoAlreadyOn;
 
-public class Car {
+public class Car implements Inspectable {
     private CarData data;
 
     public Car(CarData data) {
