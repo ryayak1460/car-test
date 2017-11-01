@@ -35,32 +35,25 @@ public class ActionPresenter implements Handler {
     public void handle(Response response) {
         PerformCarActionResponse data = (PerformCarActionResponse)response;
         Text model = new Text();
-        if (data.error == null) {
-            model.lines.add(makeSuccessMessage(data)) ;
-        } else {
-            model.lines.add(data.error.message);
-        }
+        String message = data.error == null ?
+            makeSuccessMessage(data) :
+            makeErrorMessage(data);
+        model.lines.add(message);
         this.view.render(model);
     }
 
-    private String getMessage(PerformCarActionResponse response) {
-        return response.error == null ?
-            makeSuccessMessage(response) :
-            response.error.message;
-    }
-
     private String makeSuccessMessage(PerformCarActionResponse response) {
-        return "Successfully " + toText(response.action)
+        return "Managed to successfully " + toText(response.action)
             + " the " + toText(response.component)
             + " of the " + toText(response.car) + ".";
     }
 
     private String toText(Action action) {
         return action == Action.TURN_ON ?
-                "turned on" :
+                "turn on" :
             action == Action.TURN_OFF ?
-                "turned off" :
-                "did nothing to";
+                "turn off" :
+                "do nothing to";
     }
 
     private String toText(Component component) {
@@ -73,5 +66,12 @@ public class ActionPresenter implements Handler {
 
     private String toText(CarWithComponentsData car) {
         return String.valueOf(car.year) + " " + car.make + " " + car.model;
+    }
+
+    private String makeErrorMessage(PerformCarActionResponse response) {
+        return "Did not successfully " + toText(response.action)
+            + " the " + toText(response.component)
+            + " of the " + toText(response.car)
+            + ".  Had the following error: " + response.error.message;
     }
 }

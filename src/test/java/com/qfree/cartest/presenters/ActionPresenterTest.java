@@ -46,17 +46,20 @@ public class ActionPresenterTest {
     @Test
     public void testErrorReturnsMessage() {
         PerformCarActionResponse response = new PerformCarActionResponse();
+        addSpectraTo(response);
         response.error = new Error();
         response.error.message = "We have an error message.";
+        response.action = Action.TURN_ON;
+        response.component = Component.HEADLIGHTS;
         presenter.handle(response);
         assertThat(view.model.lines.get(0),
-            equalTo("We have an error message."));
+            equalTo("Did not successfully turn on the headlights of the 2008 Kia Spectra.  Had the following error: We have an error message."));
     }
 
     @Test
     public void testSuccessReturnsComponentMessage() {
         String message =
-            "Successfully turned on the headlights of the 2008 Kia Spectra.";
+            "Managed to successfully turn on the headlights of the 2008 Kia Spectra.";
         PerformCarActionResponse response = new PerformCarActionResponse();
         addSpectraTo(response);
         response.action = Action.TURN_ON;
@@ -79,7 +82,7 @@ public class ActionPresenterTest {
     public void testSuccessDefinitelyReturnsComponentMessage() {
         PerformCarActionResponse response = new PerformCarActionResponse();
         String message =
-            "Successfully turned off the stereo of the 2013 Ford Focus.";
+            "Managed to successfully turn off the stereo of the 2013 Ford Focus.";
         addFocusTo(response);
         response.action = Action.TURN_OFF;
         response.component = Component.STEREO;
