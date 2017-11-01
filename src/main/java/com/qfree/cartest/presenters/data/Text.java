@@ -15,11 +15,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.qfree.cartest.transactions.data;
+package com.qfree.cartest.presenters.data;
 
-public class PerformCarActionResponse implements Response {
-    public Action action = Action.NOTHING;
-    public Component component = Component.ENGINE;
-    public CarWithComponentsData car;
-    public Error error;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Text implements ViewModel {
+    public List<String> lines = new ArrayList<String>();
 }

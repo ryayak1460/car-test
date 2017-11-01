@@ -26,14 +26,15 @@ import com.qfree.cartest.transactions.data.PerformCarActionResponse;
 
 public class HandleActionResponseCommand implements Command {
     private Handler handler;
+    private PerformCarActionResponse response;
 
-    public HandleActionResponseCommand(Handler handler) {
+    public HandleActionResponseCommand(Handler handler, PerformCarActionResponse response) {
         this.handler = handler;
+        this.response = response;
     }
 
     public void execute(Data data) {
         CarData car = (CarData)data;
-        PerformCarActionResponse response = new PerformCarActionResponse();
         response.car = new CarWithComponentsData();
         response.car.year = car.year;
         response.car.make = car.make;

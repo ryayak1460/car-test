@@ -44,6 +44,15 @@ public class CarActionPerformerTest {
     }
 
     @Test
+    public void testNothingHasNothingActionInResponse() {
+        PerformCarActionRequest request = new PerformCarActionRequest();
+        request.action = Action.NOTHING;
+        request.car.engine = true;
+        transaction.process(request);
+        assertThat(handler.response.action, equalTo(Action.NOTHING));
+    }
+
+    @Test
     public void testNoActionDoesNothingToAnEngine() {
         PerformCarActionRequest request = new PerformCarActionRequest();
         request.action = Action.NOTHING;
@@ -60,6 +69,16 @@ public class CarActionPerformerTest {
         request.car.headlights = true;
         transaction.process(request);
         assertThat(handler.response.car.headlights, equalTo(true));
+    }
+
+    @Test
+    public void testHeadlightsHasHeadlightsComponentOnResponse() {
+        PerformCarActionRequest request = new PerformCarActionRequest();
+        request.action = Action.NOTHING;
+        request.component = Component.HEADLIGHTS;
+        request.car.headlights = true;
+        transaction.process(request);
+        assertThat(handler.response.component, equalTo(Component.HEADLIGHTS));
     }
 
     @Test
@@ -80,6 +99,14 @@ public class CarActionPerformerTest {
         request.car.engine = false;
         transaction.process(request);
         assertThat(handler.response.car.engine, equalTo(true));
+    }
+
+    @Test
+    public void testTurnOnHasTurnOnActionInResponse() {
+        PerformCarActionRequest request = new PerformCarActionRequest();
+        request.action = Action.TURN_ON;
+        transaction.process(request);
+        assertThat(handler.response.action, equalTo(Action.TURN_ON));
     }
 
     @Test

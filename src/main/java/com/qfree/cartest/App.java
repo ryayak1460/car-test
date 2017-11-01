@@ -20,20 +20,22 @@ package com.qfree.cartest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import com.qfree.cartest.transactions.data.BuildLotRequest;
+import com.qfree.cartest.transactions.LotBuilder;
 
 import com.qfree.cartest.models.ICar;
 
-public class CarTest {
+public class App {
     private final List<ICar> carLot;
 
-    CarTest() {
+    App() {
         carLot = new ArrayList<>();
     }
 
     public static void main(String args[]) {
         System.out.println("App started!");
 
-        CarTest carTest = new CarTest();
+        App carTest = new App();
         /**
          * Step 1:
          *

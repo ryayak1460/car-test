@@ -44,9 +44,17 @@ public class CarActionPerformer {
     }
 
     private void doNothing(PerformCarActionRequest request) {
-        PerformCarActionResponse response = new PerformCarActionResponse();
+        PerformCarActionResponse response = makeResponse(request);
+        response.component = request.component;
         response.car = request.car;
         handler.handle(response);
+    }
+
+    private PerformCarActionResponse makeResponse(PerformCarActionRequest request) {
+        PerformCarActionResponse response = new PerformCarActionResponse();
+        response.action = request.action;
+        response.component = request.component;
+        return response;
     }
 
     private void tryToPerform(PerformCarActionRequest request) {
@@ -58,7 +66,8 @@ public class CarActionPerformer {
     }
 
     private void doPerform(PerformCarActionRequest request) {
-        Command command = new HandleActionResponseCommand(handler);
+        PerformCarActionResponse response = makeResponse(request);
+        Command command = new HandleActionResponseCommand(handler, response);
         Car car = makeCarFrom(request.car);
         Components component = makeCarComponentFrom(request.component);
         if (request.action == Action.TURN_ON)
