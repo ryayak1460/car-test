@@ -276,4 +276,20 @@ public class CarActionPerformerTest {
         assertThat(handler.response.error.message,
             equalTo("Stereo already off."));
     }
+
+    @Test
+    public void testFailureRetainsCarInformation() {
+        PerformCarActionRequest request = new PerformCarActionRequest();
+        request.action = Action.TURN_OFF;
+        request.component = Component.STEREO;
+        request.car.engine = true;
+        request.car.stereo = false;
+        request.car.year = 2008;
+        request.car.make = "Kia";
+        request.car.model = "Spectra";
+        transaction.process(request);
+        assertThat(handler.response.car.year, equalTo(2008));
+        assertThat(handler.response.action, equalTo(Action.TURN_OFF));
+        assertThat(handler.response.component, equalTo(Component.STEREO));
+    }
 }

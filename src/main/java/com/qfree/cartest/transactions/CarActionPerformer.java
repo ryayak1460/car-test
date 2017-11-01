@@ -61,7 +61,7 @@ public class CarActionPerformer {
         try {
             doPerform(request);
         } catch (Exception exception) {
-            handleFailedRequest(exception.getMessage());
+            handleFailedRequest(request, exception.getMessage());
         }
     }
 
@@ -96,8 +96,11 @@ public class CarActionPerformer {
                 Components.ENGINE;
     }
 
-    private void handleFailedRequest(String message) {
+    private void handleFailedRequest(PerformCarActionRequest request, String message) {
         PerformCarActionResponse response = new PerformCarActionResponse();
+        response.car = request.car;
+        response.action = request.action;
+        response.component = request.component;
         response.error = new Error();
         response.error.message = message;
         handler.handle(response);
