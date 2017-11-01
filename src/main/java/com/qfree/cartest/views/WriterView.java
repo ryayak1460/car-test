@@ -18,16 +18,16 @@
 package com.qfree.cartest.views;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 import com.qfree.cartest.presenters.View;
 import com.qfree.cartest.presenters.data.Text;
 import com.qfree.cartest.presenters.data.ViewModel;
 
 public class WriterView implements View {
-    private Writer writer;
+    private PrintWriter writer;
 
-    public WriterView(Writer writer) {
+    public WriterView(PrintWriter writer) {
         this.writer = writer;
     }
 
@@ -40,7 +40,7 @@ public class WriterView implements View {
 
     private void writeLines(Text text) throws IOException {
         for (String line : text.lines)
-            writer.write(line + "\n");
-        writer.close();
+            writer.println(line);
+        writer.flush();
     }
 }

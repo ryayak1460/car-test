@@ -17,9 +17,10 @@
  */
 package com.qfree.cartest.views;
 
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import com.qfree.cartest.presenters.View;
 import com.qfree.cartest.presenters.ViewFactory;
@@ -28,20 +29,21 @@ public class ViewFactoryImpl implements ViewFactory {
     private String path = "output.txt";
 
     public View make(String type) {
-        Writer writer = tryToMakeFileWriter();
+        PrintWriter writer = tryToMakeWriter();
         return new WriterView(writer);
     }
 
-    private Writer tryToMakeFileWriter() {
+    private PrintWriter tryToMakeWriter() {
         try {
-            return makeFileWriter();
+            return makeWriter();
         } catch (IOException exception) {
             return null;
         }
     }
 
-    private Writer makeFileWriter() throws IOException {
-        return new FileWriter(this.path);
+    private PrintWriter makeWriter() throws IOException {
+        OutputStream out = new FileOutputStream(this.path, true);
+        return new PrintWriter(out);
     }
 
     public void setPath(String path) {

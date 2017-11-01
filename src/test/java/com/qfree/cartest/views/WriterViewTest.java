@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 import com.qfree.cartest.presenters.data.Text;
 
@@ -32,12 +32,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class WriterViewTest {
-    private Writer writer;
+    private PrintWriter writer;
     private WriterView view;
 
     @Before
     public void housekeeping() {
-        this.writer = mock(Writer.class);
+        this.writer = mock(PrintWriter.class);
         this.view = new WriterView(writer);
     }
 
@@ -53,7 +53,7 @@ public class WriterViewTest {
         Text model = new Text();
         model.lines.add("a line of text");
         view.render(model);
-        verify(writer, times(1)).write("a line of text\n");
-        verify(writer, times(1)).close();
+        verify(writer, times(1)).println("a line of text");
+        verify(writer, times(1)).flush();
     }
 }
