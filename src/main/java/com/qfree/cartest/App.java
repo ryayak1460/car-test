@@ -54,9 +54,9 @@ public class App {
 
     public static void main(String args[]) {
         System.out.println("App started!");
-
-        App carTest = new App();
-        carTest.run();
+        App app = new App();
+        app.run();
+        System.out.println("App stopped! Check question{1,2,3}_out.txt for output.");
     }
 
     public void run() {
@@ -178,14 +178,23 @@ public class App {
     }
 
     private void start(CarWithComponentsData car) {
+        CarActionPerformer transaction = makeActionTransaction();
+        PerformCarActionRequest request = makeActionRequest(car);
+        request.action = Action.TURN_ON;
+        transaction.process(request);
+    }
+
+    private CarActionPerformer makeActionTransaction() {
         String type = Presenters.ACTION.toString();
         Handler handler = presenterFactory.make(type);
-        CarActionPerformer transaction = new CarActionPerformer(handler);
+        return new CarActionPerformer(handler);
+    }
+
+    private PerformCarActionRequest makeActionRequest(CarWithComponentsData car) {
         PerformCarActionRequest request = new PerformCarActionRequest();
-        request.action = Action.TURN_ON;
         request.component = Component.ENGINE;
         request.car = car;
-        transaction.process(request);
+        return request;
     }
 
     void stopAllCars() {
@@ -193,12 +202,11 @@ public class App {
     }
 
     private void stop(CarWithComponentsData car) {
-        String type = Presenters.ACTION.toString();
-        CarActionPerformer transaction = new CarActionPerformer(presenterFactory.make(type));
-        PerformCarActionRequest request = new PerformCarActionRequest();
+        CarActionPerformer transaction = makeActionTransaction();
+        PerformCarActionRequest request = makeActionRequest(car);
+        car.engine = true;
         request.action = Action.TURN_OFF;
-        request.component = Component.ENGINE;
-        request.car = car;
         transaction.process(request);
+        car.engine = false;
     }
 }
