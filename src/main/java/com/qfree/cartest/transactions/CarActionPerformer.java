@@ -31,53 +31,51 @@ import com.qfree.cartest.transactions.data.PerformCarActionResponse;
 
 public class CarActionPerformer {
     private Handler handler;
+    private PerformCarActionResponse response;
 
     public CarActionPerformer(Handler handler) {
         this.handler = handler;
     }
 
     public void process(PerformCarActionRequest request) {
-        if (request.action == Action.NOTHING)
-            doNothing(request);
+        makeResponse(request);
+        if (willDoNothing())
+            handler.handle(response);
         else
-            tryToPerform(request);
+            tryToPerform();
     }
 
-    private void doNothing(PerformCarActionRequest request) {
-        PerformCarActionResponse response = makeResponse(request);
-        response.component = request.component;
-        response.car = request.car;
-        handler.handle(response);
-    }
-
-    private PerformCarActionResponse makeResponse(PerformCarActionRequest request) {
-        PerformCarActionResponse response = new PerformCarActionResponse();
+    private void makeResponse(PerformCarActionRequest request) {
+        this.response = new PerformCarActionResponse();
         response.action = request.action;
         response.component = request.component;
-        return response;
+        response.car = request.car;
     }
 
-    private void tryToPerform(PerformCarActionRequest request) {
+    private boolean willDoNothing() {
+        return response.action == Action.NOTHING;
+    }
+
+    private void tryToPerform() {
         try {
-            doPerform(request);
+            doPerform();
         } catch (Exception exception) {
-            handleFailedRequest(request, exception.getMessage());
+            handleFailedRequest(exception.getMessage());
         }
     }
 
-    private void doPerform(PerformCarActionRequest request) {
-        PerformCarActionResponse response = makeResponse(request);
-        Command command = new HandleActionResponseCommand(handler, response);
-        Car car = makeCarFrom(request.car);
-        Components component = makeCarComponentFrom(request.component);
-        if (request.action == Action.TURN_ON)
+    private void doPerform() {
+        Car car = makeCar();
+        Components component = makeCarComponent();
+        if (willTurnOn())
             car.start(component);
         else
             car.turnOff(component);
-        car.inspect(command);
+        handleSuccessfulRequest(car);
     }
 
-    private Car makeCarFrom(CarWithComponentsData car) {
+    private Car makeCar() {
+        CarWithComponentsData car = response.car;
         CarData data = new CarData();
         data.year = car.year;
         data.make = car.make;
@@ -88,19 +86,24 @@ public class CarActionPerformer {
         return new Car(data);
     }
 
-    private Components makeCarComponentFrom(Component component) {
-        return component == Component.HEADLIGHTS ?
+    private Components makeCarComponent() {
+        return response.component == Component.HEADLIGHTS ?
                 Components.HEADLIGHTS :
-            component == Component.STEREO ?
+            response.component == Component.STEREO ?
                 Components.STEREO :
                 Components.ENGINE;
     }
 
-    private void handleFailedRequest(PerformCarActionRequest request, String message) {
-        PerformCarActionResponse response = new PerformCarActionResponse();
-        response.car = request.car;
-        response.action = request.action;
-        response.component = request.component;
+    private boolean willTurnOn() {
+        return response.action == Action.TURN_ON;
+    }
+
+    private void handleSuccessfulRequest(Car car) {
+        Command command = new HandleActionResponseCommand(handler, response);
+        car.inspect(command);
+    }
+
+    private void handleFailedRequest(String message) {
         response.error = new Error();
         response.error.message = message;
         handler.handle(response);

@@ -35,7 +35,6 @@ public class HandleActionResponseCommand implements Command {
 
     public void execute(Data data) {
         CarData car = (CarData)data;
-        response.car = new CarWithComponentsData();
         response.car.year = car.year;
         response.car.make = car.make;
         response.car.model = car.model;
