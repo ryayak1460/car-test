@@ -30,13 +30,13 @@ public class ViewFactoryImplTest {
     public void testLotMakesFile() {
         ViewFactory factory = new ViewFactoryImpl();
         assertThat(factory.make(Presenters.LOT.toString()),
-            instanceOf(FileView.class));
+            instanceOf(WriterView.class));
     }
 
     @Test
     public void testActionMakesFile() {
         ViewFactory factory = new ViewFactoryImpl();
         assertThat(factory.make(Presenters.ACTION.toString()),
-            instanceOf(FileView.class));
+            instanceOf(WriterView.class));
     }
 }

@@ -29,7 +29,7 @@ public class ViewFactoryImpl implements ViewFactory {
 
     public View make(String type) {
         Writer writer = tryToMakeFileWriter();
-        return new FileView(writer);
+        return new WriterView(writer);
     }
 
     private Writer tryToMakeFileWriter() {

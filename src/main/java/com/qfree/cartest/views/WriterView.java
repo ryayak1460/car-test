@@ -17,43 +17,30 @@
  */
 package com.qfree.cartest.views;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.Writer;
 
+import com.qfree.cartest.presenters.View;
 import com.qfree.cartest.presenters.data.Text;
+import com.qfree.cartest.presenters.data.ViewModel;
 
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-public class FileViewTest {
+public class WriterView implements View {
     private Writer writer;
-    private FileView view;
 
-    @Before
-    public void housekeeping() {
-        this.writer = mock(Writer.class);
-        this.view = new FileView(writer);
+    public WriterView(Writer writer) {
+        this.writer = writer;
     }
 
-    @Test
-    public void testNoLinesWritesNothing() throws IOException {
-        Text model = new Text();
-        view.render(model);
-        verify(writer, never()).write(anyString());
+    public void render(ViewModel model) {
+        try {
+            writeLines((Text)model);
+        } catch (IOException exception) {
+        }
     }
 
-    @Test
-    public void testOneLineWritesOnce() throws IOException {
-        Text model = new Text();
-        model.lines.add("a line of text");
-        view.render(model);
-        verify(writer, times(1)).write("a line of text\n");
-        verify(writer, times(1)).close();
+    private void writeLines(Text text) throws IOException {
+        for (String line : text.lines)
+            writer.write(line + "\n");
+        writer.close();
     }
 }
