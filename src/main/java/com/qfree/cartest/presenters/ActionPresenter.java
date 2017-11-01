@@ -43,25 +43,23 @@ public class ActionPresenter implements Handler {
     }
 
     private String makeSuccessMessage(PerformCarActionResponse response) {
-        return "Managed to successfully " + toText(response.action)
+        return "Managed to successfully " + toText(response);
+    }
+
+    private String toText(PerformCarActionResponse response) {
+        return toText(response.action)
             + " the " + toText(response.component)
             + " of the " + toText(response.car) + ".";
     }
 
     private String toText(Action action) {
-        return action == Action.TURN_ON ?
-                "turn on" :
-            action == Action.TURN_OFF ?
-                "turn off" :
-                "do nothing to";
+        return action == Action.NOTHING ?
+            "do nothing to" :
+            action.toString().toLowerCase().replaceAll("_", " ");
     }
 
     private String toText(Component component) {
-        return component == Component.HEADLIGHTS ?
-                "headlights" :
-            component == Component.STEREO ?
-                "stereo" :
-                "engine";
+        return component.toString().toLowerCase();
     }
 
     private String toText(CarWithComponentsData car) {
@@ -69,9 +67,7 @@ public class ActionPresenter implements Handler {
     }
 
     private String makeErrorMessage(PerformCarActionResponse response) {
-        return "Did not successfully " + toText(response.action)
-            + " the " + toText(response.component)
-            + " of the " + toText(response.car)
-            + ".  Had the following error: " + response.error.message;
+        return "Did not successfully " + toText(response)
+            + "  Had the following error: " + response.error.message;
     }
 }
